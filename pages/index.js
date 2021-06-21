@@ -33,26 +33,26 @@ export default function Home(props) {
             praticando layout de blog com reactjs e Nextjs.
           </p>
         </article>
+        </section>
 
-        <h2>Posts</h2>
-        <article className="postContainer__post">
-          <a href="/">
-            Alura.js 02
-          </a>
+        <section>
+        <h2>Repositórios favoritos</h2>
+        {
+          props.repos.map((project) => {
+            return (
+              <article className="postContainer__post">
+              <a href="/">
+                 {project.repo}
+              </a>
           <p>
-            praticando layout de blog com reactjs e Nextjs.
+            {project.description}
           </p>
         </article>
-
-        <h2>Posts</h2>
-        <article className="postContainer__post">
-          <a href="/">
-            Alura.js 03
-          </a>
-          <p>
-            praticando layout de blog com reactjs e Nextjs.
-          </p>
-        </article>
+              
+            )
+          })
+        }
+     
       </section>
 
       
@@ -63,9 +63,17 @@ export default function Home(props) {
   )
 }
 export async function getStaticProps () {
+  const githubResponse = await fetch('https://api.github.com/users/marlon-santana')
+  .then(res => res.json())
+  
+
+  const repos = await fetch('https://gh-pinned-repos.egoist.sh/?username=marlon-santana')
+  .then(res => res.json())
+
   return {
     props: {
-      avatar_url: "https://avatars.githubusercontent.com/u/72947608?v=4"
+      avatar_url: githubResponse.avatar_url,
+      repos,
     
     }
   }
